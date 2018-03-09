@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<main>
+		<div>
+			<h3>Postage Calculator</h3>
+		</div>
+		<div>
+			<form action="/getPost" method="get">
+				<input type='text' name='postWeight' required>
+				<select name="pkgType">
+					<option>Letters (Stamped)</option>
+					<option>Letters (Metered)</option>
+					<option>Large Envelopes (Flats)</option>
+					<option>Parcels</option>
+				</select>
+				<input type='submit'>
+			</form>	
+		</div>
+	</main>
+</body>
+</html>
