@@ -3,8 +3,6 @@ var app = express();
 
 var pg = require("pg"); // This is the postgres database connection module.
 
-var dbURL = getenv('DATABASE_URL');
-
 const connectionString;
 
 if (process.env == "herokudb"){
