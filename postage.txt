@@ -1,0 +1,28 @@
+After completing the assignment, please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application:
+https://frozen-plains-42596.herokuapp.com/calcPostage.html
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/larcade-tess/CS313-node
+
+3. Briefly list and describe the elements of the application that are functioning. Include any special instructions about how to login and/or use your application.
+Application will accept user input in the form of a number, and will allow the user to select a package type. The application then computes the cost of shipping and displays it. 
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+All peices are working.
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing was probably connecting it to heroku. 
+
+6. In your own words, briefly describe the concept of a callback function and why it is useful.
+A callback function is a function within a function. This allows users to verify that their information is processed in the correct order.
+
+7. Please select the category you feel best describes your assignment:
+
+D - Meets requirements
+
+
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+The program functions and meets all of the specified requirements. 
