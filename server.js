@@ -13,13 +13,16 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/getContact', function(request, response) {
-	getContact(request, response);
+	// getContact(request, response);
+	response.json({hello: 'world'});
 });
 app.get('/getApartment', function(request, response) {
-	getApartment(request, response);
+	// getApartment(request, response);
+	response.json({hello: 'world'});
 });
 app.get('/updateApartment', function(request, response) {
-	updateApartment(request, response);
+	// updateApartment(request, response);
+	response.json({hello: 'world'});
 });
 
 
