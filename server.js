@@ -17,6 +17,9 @@ app.set('view engine', 'ejs');
 app.get('/getContact', function(request, response) {
 	getContact(request, response);
 });
+app.get('/insertContact', function(request, response) {
+	insertContact(request, response);
+});
 app.get('/getApartment', function(request, response) {
 	getApartment(request, response);
 });
@@ -89,6 +92,61 @@ function getPersonFromDb(id, callback) {
 	});
 
 } // end of getPersonFromDb
+
+
+function insertContact(request, response) {
+	var first = request.query.first_name;
+	var last = request.query.last_name;
+	var phone = request.query.phone;
+	var email = request.query.email;
+
+	insertContactToDb(first, last, phone, email, function(error, result) {
+
+		if (error || result == null || result.length != 1) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			var person = result[0];
+			response.status(200).json(result[0]);
+		}
+	});
+}
+
+function insertContactToDb(first, last, phone, email, callback) {
+
+	var client = new pg.Client(connectionString);
+
+	client.connect(function(err) {
+		if (err) {
+			console.log("Error connecting to DB: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		var sql = "INSERT INTO contact (first_name, last_name, phone, email) VALUES ($1, $2, $3, $4)";
+		var params = [first, last, phone, email];
+
+		var query = client.query(sql, params, function(err, result) {
+			// we are now done getting the data from the DB, disconnect the client
+			client.end(function(err) {
+				if (err) throw err;
+			});
+
+			if (err) {
+				console.log("Error in query: ")
+				console.log(err);
+				callback(err, null);
+			}
+
+			console.log("Found result: " + JSON.stringify(result.rows));
+
+			// call whatever function the person that called us wanted, giving it
+			// the results that we have been compiling
+			callback(null, result.rows);
+		});
+	});
+
+} // end of getPersonFromDb
+
 
 function getApartment(request, response) {
 	// First get the person's id
