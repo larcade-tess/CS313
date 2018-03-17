@@ -13,20 +13,17 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/getContact', function(request, response) {
-	// getContact(request, response);
-	response.json({hello: 'world'});
+	getContact(request, response);
 });
 app.get('/getApartment', function(request, response) {
-	// getApartment(request, response);
-	response.json({hello: 'world'});
+	getApartment(request, response);
 });
 app.get('/updateApartment', function(request, response) {
-	// updateApartment(request, response);
-	response.json({hello: 'world'});
+	updateApartment(request, response);
+
 });
 app.get('/', function(request, response) {
-	// updateApartment(request, response);
-	response.json({hello: 'world'});
+	updateApartment(request, response);
 });
 
 app.listen(app.get('port'), function() {
