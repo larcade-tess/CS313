@@ -2,7 +2,14 @@ var express = require('express');
 var app = express();
 
 var pg = require("pg"); // This is the postgres database connection module.
-const connectionString = "postgres://admin:1234pass@localhost:5433/japdb";
+
+var dbURL = getenv('DATABASE_URL');
+if (process.env == "herokudb"){
+	const connectionString = process.env.dbURL;
+}
+else {
+	const connectionString = "postgres://admin:1234pass@localhost:5433/japdb";
+}
 
 app.set('port', (process.env.PORT || 5000));
 
