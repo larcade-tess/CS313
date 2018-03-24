@@ -1,0 +1,188 @@
+body {
+	background-image:url('padded.png');
+	background-repeat:repeat;
+	margin:0px;
+}
+main {
+	background-color: #faebd7;
+}
+footer {
+	padding:10px 10px;
+	color:#faebd7;
+}
+nav {
+	background-color: #E9BF00;
+}
+nav a {
+	text-decoration:none;
+	color:#333333;
+	font-size:1.3em;
+	padding:15px;
+	font-family: serif;
+}
+ul {
+	padding: 10px 68px;
+	margin:0px;
+}
+li {
+	list-style:none;
+	display:inline;
+}
+h2 {
+	margin:0px;
+}
+h3 {
+	font-size:2em;
+	margin:0px;
+	padding: 30px 0px;
+}
+h4 {
+	margin:0px;
+}
+form {
+	padding-bottom:30px;
+}
+.pad-h2 {
+	padding-top:20px;
+}
+#logo {
+	margin-left: 80px;
+	font-size: 3em;
+	color:#faebd7;
+}
+#apartment1 {
+	background-image:url("15th_street.jpg");
+	height:200px;
+	width:200px;
+}
+#apartment13 {
+	background-image:url("http://via.placeholder.com/200x200");
+	height:200px;
+	width:200px;
+}
+#apartment13 {
+	background-image:url("http://via.placeholder.com/200x200");
+	height:200px;
+	width:200px;
+}
+.pricepg {
+	text-align:center;
+}
+.aptimg {
+	height:auto;
+	width:600px;
+}
+.containapart {
+	display:flex;
+	padding-bottom:30px;
+}
+.apartmentimg {
+	display:flex;
+}
+.info {
+	display:flex;
+	flex-flow:column;
+	padding:0px 20px;
+}
+.aptinfo {
+	display:flex;
+	flex-flow:column;
+}
+.button-right {
+	width:20px;
+	height:450px;
+	float: right;
+	background-color:#333333;
+	border: 2px solid #333333;
+	opacity:.8;
+}
+.button-left {
+	width:20px;
+	height:450px;
+	float: left;
+	background-color:#333333;
+	border: 2px solid #333333;
+	opacity:.8;
+}
+.containslide {
+	width:640px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.apartments {
+	display:grid;
+	grid-gap:15px;
+}
+.column1 {
+	grid-column-start:1;
+	grid-column-end:2;
+}
+.column2 {
+	grid-column-start:2;
+	grid-column-end:3;
+}
+.column3 {
+	grid-column-start:3;
+	grid-column-end:4;
+}
+.column4 {
+	grid-column-start:4;
+	grid-column-end:5;
+}
+.column5 {
+	grid-column-start:5;
+	grid-column-end:6;
+}
+.column6 {
+	grid-column-start:6;
+	grid-column-end:7;
+}
+.column7 {
+	grid-column-start:7;
+	grid-column-end:8;
+}
+.column8 {
+	grid-column-start:8;
+	grid-column-end:9;
+}
+.column9 {
+	grid-column-start:9;
+	grid-column-end:10;
+}
+.error {
+	color:red;
+}
+.login {
+	position:absolute;
+	top: 20px;
+	right: 30px;
+	color:#E9BF00;
+}
+.logout {
+	position:absolute;
+	top: 35px;
+	right: 30px;
+	color:#E9BF00;
+}
+.indent {
+	padding-left:80px;
+	padding-bottom:20px;
+}
+.section {
+	display: flex;
+	flex-flow: wrap;
+	padding-bottom:20px;
+}
+.name {
+	padding-right:30px;
+}
+.button {
+	background-color: #E9BF00;
+	border: none;
+	padding: 5px 65px;
+	margin-top: 20px;
+}
+.fname {
+	font-weight:700px;
+
+}

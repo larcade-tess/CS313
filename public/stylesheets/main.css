@@ -1,0 +1,174 @@
+.box {
+	display:flex;
+	flex-flow:row wrap;
+}
+.box1 {
+	display:flex;
+	flex-flow:row wrap;
+	width:50%;
+	padding-left:15px;
+}
+.box2 {
+	display:flex;
+	flex-flow:column;
+	width:40%;
+}
+.box1a {
+	display:flex;
+	flex-flow:column;
+	width:40%;
+	padding-left:15px;
+}
+.box2a {
+	display:flex;
+	flex-flow:row;
+	width:50%;
+}
+.box3 {
+	border:solid 3px #110221;
+	height:334px;
+	width:100%;
+	margin:10px;
+	padding:0px 10px;
+}
+.box3a {
+	border:solid 3px #110221;
+	height:334px;
+	width:100%;
+	margin:10px;
+	padding:0px 0px;
+}
+.box4 {
+	height:140px;
+	border:solid 3px #110221;
+	margin:10px;
+	padding:0px 5px;
+}
+.box5 {
+	height:165px;
+	border:solid 3px #110221;
+	margin:10px;
+	padding:0px 5px;
+}
+
+body {
+	background-color:#fdf5e6;
+	padding:0px;
+	margin:0px;
+	min-width:900px;
+}
+main {
+	width:900px;
+	height:800px;
+	margin-left:auto;
+	margin-right:auto;
+}
+nav {
+	background-color:#d3d3d3;
+}
+a {
+	text-decoration:none;
+	color:#333333;
+	font-size:1.3em;
+	padding:15px;
+	font-family: 'Slabo 27px', serif;
+}
+p {
+	color:#333333;
+	font-family: 'Slabo 27px', serif;
+}
+ul {
+	padding:5px;
+}
+li {
+	list-style:none;
+	display:inline;
+}
+header {
+	background-image:url('web-tile.png');
+	background-repeat:repeat;
+}
+footer {
+	background-image:url('web-tile.png');
+	background-repeat:repeat;
+	height:40px;
+	color:#FAEBD7;
+	font-family: 'Great Vibes', cursive;
+	padding:15px;
+}
+.headcont {
+	height:155px;
+}
+a:hover {
+	color:#333333;
+}
+h1 {
+	color:#FAEBD7;
+	font-family: 'Great Vibes', cursive;
+	font-size:4em;
+}
+h3 {
+	color:#333333;
+	font-family: 'Great Vibes', cursive;
+	font-size:2em;
+	margin:5px;
+}
+h4 {
+	color:#333333;
+	font-family: 'Great Vibes', cursive;
+	font-size:1.5em;
+	margin:5px;
+}
+.header {
+	padding-top:50px;
+	padding-left:30px;
+}
+#flowerImg {
+	height:334px;
+	width:100%;
+	transition: .5s ease;
+	background-color:#FAEBD7;
+	padding:0px;
+	display:inline-block;
+}
+#flowerTxt {
+	transition: .5s ease;
+    opacity:0;
+    position:relative;
+    width:80%;
+    color:#333333;
+    bottom:99%;
+    padding-left:10px;
+    font-size:1.5em;
+
+}
+#flowerdiv:hover #flowerTxt {
+	opacity:1;
+}
+
+#flowerdiv:hover #flowerImg {
+	opacity:.3;
+}
+
+.grid {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding:40px;
+}
+.additem {
+	display:flex;
+	flex-flow:column;
+}
+.list {
+	padding:20px;
+}
+.bottomlink {
+	color:#110221;
+}
+.bottomlink:hover {
+	color:#333333;
+}
+.padded {
+	padding-top:30px;
+}
