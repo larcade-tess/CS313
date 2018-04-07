@@ -47,8 +47,13 @@ app.post('/logout', handleLogout);
 app.get('/userinfo', function(request, response) {
 	response.render(path.join('pages', 'userinfo'));
 });
-app.get('/addUser', function(request, response) {
-	response.render(path.join('pages', 'addUser'));
+app.get('/addUser', verifyLogin, function(request, response, next) {
+		if (response.locals.isAuthed) {
+		response.render(path.join('pages', 'addUser'));
+	} 
+	else {
+		response.render(path.join('pages', 'all'));
+	}
 });
 app.post('/getNewUser', function (request, response) {
 	getNewUser(request, response);
@@ -68,7 +73,7 @@ app.get('/contacts', verifyLogin, function(request, response, next) {
 		response.render(path.join('pages', 'contacts'));
 	} 
 	else {
-		response.render(path.join('pages', 'all?loggedIn=false'));
+		response.render(path.join('pages', 'all'));
 	}
 });
 app.post('/newContact', function (request, response) {
@@ -96,7 +101,7 @@ app.get('/addApartment', verifyLogin, function(request, response, next){
 		response.render(path.join('pages', 'addApartment'));
 	} 
 	else {
-		response.render(path.join('pages', 'all?loggedIn=false'));
+		response.render(path.join('pages', 'all'));
 	}
 });
 app.post('/newApartment', function (request, response) {
@@ -110,7 +115,7 @@ app.get('/allApartments', verifyLogin, function(request, response, next) {
 		response.render(path.join('pages', 'allApartments'));
 	} 
 	else {
-		response.render(path.join('pages', 'all?loggedIn=false'));
+		response.render(path.join('pages', 'all'));
 	}
 });
 
