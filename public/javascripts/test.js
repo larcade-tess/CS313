@@ -1,7 +1,7 @@
 function login() {
 	var username = $("#username").val();
 	var password = $("#password").val();
-
+	console.log(username + " " + password);
 	var params = {
 		username: username,
 		password: password
@@ -10,6 +10,7 @@ function login() {
 	$.post("/login", params, function(result) {
 		if (result && result.success) {
 			$("#status").text("Successfully logged in.");
+			window.location = '/contacts'; // load logged in page
 		} else {
 			$("#status").text("Error logging in.");
 		}
@@ -23,17 +24,5 @@ function logout() {
 		} else {
 			$("#status").text("Error logging out.");
 		}
-	});
-}
-
-function getServerTime() {
-	$.get("/getServerTime", function(result) {
-		if (result && result.success) {
-			$("#status").text("Server time: " + result.time);
-		} else {
-			$("#status").text("Got a result back, but it wasn't a success. Your reponse should have had a 401 status code.");
-		}
-	}).fail(function(result) {
-		$("#status").text("Could not get server time.");
 	});
 }

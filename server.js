@@ -5,15 +5,27 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var upload = multer(); // for parsing multipart/form-data
 var session = require('express-session');
+const passport = require('passport');
+const bcrypt = require('bcrypt');
+
 
 var pg = require("pg"); // This is the postgres database connection module.
 
-const connectionString = process.env.DATABASE_URL || "postgres://admin:1234pass@localhost:5433/japdb";
+const connectionString = process.env.DATABASE_URL || "postgres://readonly:readonly@localhost:5433/japdb";
 console.log('Connecting to DB : ', connectionString);
 var v = path.join(__dirname, 'public', 'views');
 
+app.use(session({
+	secret: 'Ill never tell',
+	resave: false,
+	saveUninitialized: true
+}));
+
+
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -24,11 +36,26 @@ app.set('views', v);
 app.set('view engine', 'ejs');
 
 
-app.use(session({
-	name: 'test-session',
-	secret: 'Ill never tell',
-	saveUninitialized: true
-}));
+app.use(logRequest);
+
+// Setup our routes
+app.post('/login', handleLogin);
+app.post('/logout', handleLogout);
+
+
+
+app.get('/userinfo', function(request, response) {
+	response.render(path.join('pages', 'userinfo'));
+});
+app.get('/addUser', function(request, response) {
+	response.render(path.join('pages', 'addUser'));
+});
+app.post('/getNewUser', function (request, response) {
+	getNewUser(request, response);
+});
+
+
+
 
 app.get('/getContact', function(request, response) {
 	getContact(request, response);
@@ -36,13 +63,18 @@ app.get('/getContact', function(request, response) {
 app.get('/insertContact', function(request, response) {
 	insertContact(request, response);
 });
-app.get('/contacts', function(request, response) {
-	response.render(path.join('pages', 'contacts'));
+app.get('/contacts', verifyLogin, function(request, response, next) {
+	if (response.locals.isAuthed) {
+		response.render(path.join('pages', 'contacts'));
+	} 
+	else {
+		response.render(path.join('pages', 'all?loggedIn=false'));
+	}
 });
 app.post('/newContact', function (request, response) {
 	addContact(request, response);
 });
-app.post('/settings', function (request, response) {
+app.post('/settings', verifyLogin, function(request, response, next){
 	settings(request, response);
 });
 
@@ -59,18 +91,27 @@ app.get('/editApartment', function(request, response) {
 app.get('/editApt', function(request, response){
 	response.render(path.join('pages', 'editApt'));
 });
-app.get('/addApartment', function(request, response){
-	response.render(path.join('pages', 'addApartment'));
+app.get('/addApartment', verifyLogin, function(request, response, next){
+	if (response.locals.isAuthed) {
+		response.render(path.join('pages', 'addApartment'));
+	} 
+	else {
+		response.render(path.join('pages', 'all?loggedIn=false'));
+	}
 });
 app.post('/newApartment', function (request, response) {
 	addApartment(request, response);
-	// response.render(path.join('pages', 'allApartments'));
 });
 app.get('/all', function(request, response) {
 	all(request, response);
 });
-app.get('/allApartments', function(request, response) {
-	response.render(path.join('pages', 'allApartments'));
+app.get('/allApartments', verifyLogin, function(request, response, next) {
+	if (response.locals.isAuthed) {
+		response.render(path.join('pages', 'allApartments'));
+	} 
+	else {
+		response.render(path.join('pages', 'all?loggedIn=false'));
+	}
 });
 
 app.get('/', function(request, response) {
@@ -106,6 +147,172 @@ app.get('/settings', function(request, response) {
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
+
+function getNewUser(request, response) {
+	var user = request.body.username;
+	var pass = request.body.password;
+	var pass1 = request.body.password1;
+	console.log("Password is: " + pass);
+
+	console.log("Password1 is: " + pass1);
+
+	if (pass == pass1){
+
+		newUser(user, pass, function(error, result) {
+			if (error || result == null ) {
+				response.status(500).json({success: false, data: error});
+			} else {
+				response.status(200).json(result);
+			}
+		});
+	}
+	else
+	{
+		result = {success: false, message: error};
+	}
+}
+function newUser (user, pass, callback){
+	var client = new pg.Client(connectionString);
+	console.log("newUser Password is: " + pass);
+	client.connect(function(err) {
+		if (err) {
+			console.log("Error connecting to DB: ");
+			console.log(err);
+			callback(err, null);
+		}
+		// console.log("Pass is: " + pass);
+
+		// var salt = bcrypt.genSaltSync(10);
+		// console.log("Salt is: " + salt);
+		// var hash = bcrypt.hashSync(pass, salt);
+
+		// console.log("Hash is: "+hash);
+
+		bcrypt.hash(pass, 10, function(err, hash) {
+
+			var sql = "INSERT INTO login (username, hash) VALUES ($1, $2)";
+			var params = [user, hash];
+
+			var query = client.query(sql, params, function(err, result) {
+			// we are now done getting the data from the DB, disconnect the client
+			client.end(function(err) {
+				if (err) throw err;
+			});
+
+			if (err) {
+				console.log("Error in query: ")
+				console.log(err);
+				callback(err, null);
+			}
+
+			console.log("Found result: " + JSON.stringify(result.rows));
+				// call whatever function the person that called us wanted, giving it
+				// the results that we have been compiling
+				callback(null, result.rows);
+			});
+		});
+	});
+}
+
+function handleLogin(request, response) {
+	var user = request.body.username;
+	var pass = request.body.password;
+
+	verifyUser(user, pass, request, response, function(error, result, response) {
+		if (error || result == null ) {
+			response.status(500).json({success: false, data: error});
+		} else {
+			response.status(200).json(result);
+		}
+	});
+}
+
+function verifyUser (user, pass, request, response, callback){
+	var client = new pg.Client(connectionString);
+
+	client.connect(function(err) {
+		if (err) {
+			console.log("Error connecting to DB: ")
+			console.log(err);
+			callback(err, null);
+		}
+
+		var sql = "SELECT username, hash FROM login WHERE username = $1::varchar";
+		var params = [user];
+
+		var query = client.query(sql, params, function(err, result) {
+			// we are now done getting the data from the DB, disconnect the client
+			client.end(function(err) {
+				if (err) throw err;
+			});
+
+			if (err) {
+				console.log("Error in query: ")
+				console.log(err);
+				callback(err, null);
+			}
+
+			console.log("Found result: " + JSON.stringify(result));
+			console.log("username is: " + result.rows[0].username);
+			console.log("password is: " + pass);
+			console.log("hash is: " + result.rows[0].hash);
+			
+			var hash = result.rows[0].hash;
+
+			bcrypt.compare(pass, hash, function(err, res) {
+				console.log("Hash is: " + hash);
+				console.log("pass is: " + pass);
+				var stat = {success:false};
+
+				if(res) {
+					request.session.user = user;
+					console.log("session user is: " + request.session.user + " " + res);
+					stat = {success: true};
+					console.log("Stat is: "+ stat.success );
+				} else {
+					console.log("No session user: " + user);
+					console.log(err);
+				}
+				callback(err, stat, response);
+			});
+		});
+	});
+}
+
+
+function handleLogout(request, response) {
+	var result = {success: false};
+
+	// We should do better error checking here to make sure the parameters are present
+	if (request.session.user) {
+		request.session.destroy();
+		result = {success: true};
+	}
+
+	response.json(result);
+}
+
+function verifyLogin(request, response, next) {
+	if (request.session.user) {
+
+		// pass things along to the next function
+		response.locals.isAuthed = true;
+		// next();
+	} else {
+
+		response.locals.isAuthed = false;
+	}
+
+	next();
+}
+
+
+function logRequest(request, response, next) {
+	console.log("Received a request for: " + request.url);
+
+	// don't forget to call next() to allow the next parts of the pipeline to function
+	next();
+}
 
 function getContact(request, response) {
 	getPeople(function(error, result) {
